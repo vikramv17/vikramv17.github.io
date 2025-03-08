@@ -664,7 +664,7 @@ Accuracy for Black Individuals 0.756578947368421</code></pre>
 </div>
 <p>These results show a small difference between groups. While the accuracy for White individuals is almost exactly in line with the overall model, the accuracy for Black individuals is 6 points lower. Statistical tests would be needed to determine if this difference is statistically significant, but these results suggest that the model may be biased against Black individuals.</p>
 <p>Next we will calculate the PPV, FPR, and FNR for each group. The following code does this.</p>
-<div id="cell-19" class="cell" data-execution_count="11">
+<div id="cell-19" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>X_test_df <span class="op">=</span> pd.DataFrame(X_test, columns<span class="op">=</span>features_to_use)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>X_test_df[<span class="st">"Race"</span>] <span class="op">=</span> group_test</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X_test_df[<span class="st">"Employment Prediction"</span>] <span class="op">=</span> y_hat</span>
@@ -761,7 +761,7 @@ Predicted Employement Proportion (Black): 0.49</code></pre>
 <p>The next question relates to error rate balance. Once again, we would need statistical significance tests to determine if the differences are significant, but the previous FPR and FNR results suggest that the model is somewhat biased against Black individuals with an 8 percentage point higher false negative rate. That said, Black individuals also have a 3 percentage point higher false positive rate, so the overall effect is unclear.</p>
 <p>Finally, we want to look at statistical parity. The previous results demonstrate that this is not satisfied as the positive prediction rate for White individuals is 8 percentage points higher than that of Black individuals. This suggests that the model is biased against Black individuals.</p>
 <p>The final step is to look at the feasible FNR and FPR rates to determine the ceiling for fairness of this model. The following code calculates and plots the results.</p>
-<div id="cell-23" class="cell" data-execution_count="22">
+<div id="cell-23" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>prevalence_white <span class="op">=</span> y_test_white.mean()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>prevalence_black <span class="op">=</span> y_test_black.mean()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -773,20 +773,22 @@ Predicted Employement Proportion (Black): 0.49</code></pre>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>fnr_values <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>fpr_white <span class="op">=</span> (prevalence_white <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> prevalence_white))<span class="op">*</span>((<span class="dv">1</span> <span class="op">-</span> desired_ppv_white) <span class="op">/</span> desired_ppv_white) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> fnr_values)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>fpr_black <span class="op">=</span> (prevalence_black <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> prevalence_black))<span class="op">*</span>((<span class="dv">1</span> <span class="op">-</span> desired_ppv_black) <span class="op">/</span> desired_ppv_black) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> fnr_values)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>fpr_line_white <span class="op">=</span> (prevalence_white <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> prevalence_white))<span class="op">*</span>((<span class="dv">1</span> <span class="op">-</span> desired_ppv_white) <span class="op">/</span> desired_ppv_white) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> fnr_values)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>fpr_line_black <span class="op">=</span> (prevalence_black <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> prevalence_black))<span class="op">*</span>((<span class="dv">1</span> <span class="op">-</span> desired_ppv_black) <span class="op">/</span> desired_ppv_black) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> fnr_values)</span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.plot(fnr_values, fpr_white, label<span class="op">=</span><span class="st">'White'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.plot(fnr_values, fpr_black, label<span class="op">=</span><span class="st">'Black'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Negative Rate (FNR)'</span>)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'False Positive Rate (FPR)'</span>)</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Feasible (FNR, FPR) Combinations'</span>)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.plot(fnr_values, fpr_line_white, label<span class="op">=</span><span class="st">'White'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.plot(fnr_values, fpr_line_black, label<span class="op">=</span><span class="st">'Black'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.scatter(fpr_white, fnr_white, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.scatter(fpr_black, fnr_black, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Negative Rate (FNR)'</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'False Positive Rate (FPR)'</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Feasible (FNR, FPR) Combinations'</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prevalence for White individuals: 0.51
 Prevalence for Black individuals: 0.40</code></pre>
@@ -799,7 +801,7 @@ Prevalence for Black individuals: 0.40</code></pre>
 </div>
 </div>
 </div>
-<p>Holding the prevalence and PPV values fixed at their observed values, in order for false positive rates to be equal between groups, the false negative rate for both groups would have to be 1. This is obviously not desirable because it would mean that the model is not predicting any positive outcomes. This demonstrates the tradeoff between error rate ballance and positive predictive value in models, as you can’t have both.</p>
+<p>Holding the prevalence and PPV values fixed at their observed values, in order for false positive rates to be equal between groups, the false negative rate for Black individuals would have to be around 0.70. You can see this by looking at the point for White individuals which represents the observed FNR and FPR values. The lines show feasible combinations, so to get the FPR for Black individuals to equal the observed White FPR, the FNR would have to be 0.70. This is obviously not desirable because it would mean that the model is losing a lot of accuracy. This demonstrates the tradeoff between error rate ballance and positive predictive value in models, as you can’t have both.</p>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
