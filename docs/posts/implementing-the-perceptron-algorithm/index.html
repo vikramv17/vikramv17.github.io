@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Vikram Vasan">
-<meta name="dcterms.date" content="2025-03-24">
+<meta name="dcterms.date" content="2025-03-25">
 <meta name="description" content="Blog Post 4">
 
 <title>Implementing the Perceptron Algorithm – Vikram Vasan CSCI 0451 Blog</title>
@@ -190,7 +190,7 @@ background-size: cover;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 24, 2025</p>
+        <p class="date">March 25, 2025</p>
       </div>
     </div>
     
@@ -209,7 +209,7 @@ background-size: cover;
 
 
 
-<p>Link to perception implementation: <a href="">perceptron.py</a></p>
+<p>Link to perception implementation: <a href="https://github.com/vikramv17/vikramv17.github.io/blob/main/posts/implementing-the-perceptron-algorithm/perceptron.py">perceptron.py</a></p>
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
 <p>This blog post attempts to implement a simple perceptron algorithm for binary classification. The perceptron algorithm is a simple linear classifier that is used to classify data into two classes. The algorithm is based on the concept of a threshold function that takes in the input features and weights and returns a binary output. The perceptron algorithm is trained using a simple update rule that adjusts the weights based on the error (loss) in the prediction. The algorithm is trained using a simple gradient descent algorithm that minimizes the error in the prediction. The perceptron algorithm is a simple and efficient algorithm that can be used to classify data into two classes.</p>
@@ -224,7 +224,7 @@ background-size: cover;
 <section id="experiments" class="level1">
 <h1>Experiments</h1>
 <p>To test our perceptron algorithm we will run some experiments and create visualizations. In order to do this we will need to make datasets to test on. We will use the perceptron_data function to quickly make random datasets with the desired number of dimensions. We will also add a separable parameter to allow us to make datasets that are not linearly separable by adding more noise. This will be needed for some of the experiments. We also define a couple of graphing functions that will help us to plot the perceptron data along with the calculated thresholds.</p>
-<div id="cell-4" class="cell" data-execution_count="36">
+<div id="cell-3" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-v0_8-whitegrid'</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">1234567</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -263,7 +263,7 @@ background-size: cover;
 <section id="check-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="check-implementation">Check Implementation</h2>
 <p>Before we move to the experiments we want to ensure that our algorithm is working as intended. To do this we will perform a minimal training loop to ensure that the loss converges to 0 on linearly separable data.</p>
-<div id="cell-6" class="cell" data-execution_count="131">
+<div id="cell-5" class="cell" data-execution_count="131">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># instantiate a model and an optimizer</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Perceptron() </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> PerceptronOptimizer(p)</span>
@@ -302,7 +302,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -312,20 +312,20 @@ background-size: cover;
 <section id="experiment-1" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-1">Experiment 1</h2>
 <p>The first experiment involves linearly separable 2-dimensional data. We will create a dataset with 50 points and plot it as shown below.</p>
-<div id="cell-8" class="cell">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">4</span>, <span class="dv">4</span>))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> <span class="dv">50</span>, noise <span class="op">=</span> <span class="fl">0.3</span>, separable <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plot_perceptron_data(X, y, ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>With this data we will run our algorithm and visualize the results. We will plot the data and the decision boundary along with the previous decision boundary as the iterations continue to improve the loss. To perform the training we are selecting a random point and seeing if it was misclassified. If it was we call the step function to update the weights. The loop stops when the loss is zero indicating that the data has been completely separated by the threshold.</p>
-<div id="cell-10" class="cell">
+<div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize a perceptron </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Perceptron()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> PerceptronOptimizer(p)</span>
@@ -375,7 +375,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -385,20 +385,20 @@ background-size: cover;
 <section id="experiment-2" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-2">Experiment 2</h2>
 <p>The second experiment involves 2-dimensional data that is not linearly separable. We will create a dataset with 50 points and plot it as shown below to confirm that it is not linearly separable.</p>
-<div id="cell-12" class="cell" data-execution_count="95">
+<div id="cell-11" class="cell" data-execution_count="95">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">4</span>, <span class="dv">4</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> <span class="dv">50</span>, noise <span class="op">=</span> <span class="fl">0.3</span>, separable <span class="op">=</span> <span class="va">False</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plot_perceptron_data(X, y, ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Since the data cannot be perfectly separated, the algorithm will run forever and never reach zero loss. To rectify this we will limit the algorithm to 1000 iterations and plot the final result along with some intermediate results.</p>
-<div id="cell-14" class="cell">
+<div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize a perceptron </span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Perceptron()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> PerceptronOptimizer(p)</span>
@@ -449,7 +449,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -459,7 +459,7 @@ background-size: cover;
 <section id="experiment-3" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-3">Experiment 3</h2>
 <p>The final experiment involves linearly separable 5-dimensional data. We will create a dataset with 50 points but we cannot plot it due to the high dimensionality. We will run the algorithm and plot the loss over time to see how it converges by plotting the loss over time.</p>
-<div id="cell-16" class="cell">
+<div id="cell-15" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> <span class="dv">50</span>, noise <span class="op">=</span> <span class="fl">0.3</span>, p_dims <span class="op">=</span> <span class="dv">5</span>, separable <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize a perceptron </span></span>
@@ -499,7 +499,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -513,7 +513,7 @@ background-size: cover;
 <section id="experiment-1-1" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-1-1">Experiment 1</h2>
 <p>The first experiment involves linearly separable 2-dimensional data and a k value of 1. The point of this experiment is to ensure that the algorithm is still working as expected and the changes haven’t impacted the results.</p>
-<div id="cell-18" class="cell">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> <span class="dv">50</span>, noise <span class="op">=</span> <span class="fl">0.3</span>, p_dims <span class="op">=</span> <span class="dv">2</span>, separable <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize a perceptron </span></span>
@@ -567,7 +567,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -577,7 +577,7 @@ background-size: cover;
 <section id="experiment-2-1" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-2-1">Experiment 2</h2>
 <p>Next we want to test the batching on linearly-separable data to see if the algorithm works with batching. We will use a k value of 10 and visualize the results.</p>
-<div id="cell-20" class="cell">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> <span class="dv">50</span>, noise <span class="op">=</span> <span class="fl">0.3</span>, p_dims <span class="op">=</span> <span class="dv">2</span>, separable <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize a perceptron </span></span>
@@ -631,7 +631,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -641,7 +641,7 @@ background-size: cover;
 <section id="experiment-3-1" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-3-1">Experiment 3</h2>
 <p>The final experiment involves a k value of n where n is the number of data points. We will test this on non linearly separable data to see if it is able to converge. Our convergence test can no longer be a loss of zero since that is impossible with data that is not linearly separable. Instead we will use a maximum number of iterations to stop the algorithm and plot the results to see if we observe convergence.</p>
-<div id="cell-22" class="cell">
+<div id="cell-21" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">50</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> perceptron_data(n_points <span class="op">=</span> n, noise <span class="op">=</span> <span class="fl">0.3</span>, p_dims <span class="op">=</span> <span class="dv">2</span>, separable <span class="op">=</span> <span class="va">False</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -687,7 +687,7 @@ background-size: cover;
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
