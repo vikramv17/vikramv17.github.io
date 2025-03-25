@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/implementing-the-perceptron-algorithm/index.html",
       "/posts/auditing-bias/index.html",
       "/posts/design-and-impact-of-automated-decision-systems/index.html",
       "/posts/classifying-palmer-penguins/index.html"
