@@ -228,7 +228,7 @@
     "href": "posts/implementing-the-perceptron-algorithm/index.html",
     "title": "Implementing the Perceptron Algorithm",
     "section": "",
-    "text": "Link to perception implementation: perceptron.py"
+    "text": "Link to perceptron implementation: perceptron.py"
   },
   {
     "objectID": "posts/implementing-the-perceptron-algorithm/index.html#understanding-perceptron.grad",
