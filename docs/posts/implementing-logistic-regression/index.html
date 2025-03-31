@@ -209,7 +209,7 @@ background-size: cover;
 
 
 
-<p>Link to logistic regression implementation: <a href="https://github.com/vikramv17/vikramv17.github.io/blob/main/posts/implementing-logistic_regression/logistic.py">logistic.py</a></p>
+<p>Link to logistic regression implementation: <a href="https://github.com/vikramv17/vikramv17.github.io/blob/main/posts/implementing-logistic-regression/logistic.py">logistic.py</a></p>
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
 <p>This blog post attempts to implement a simple logistic regression algorithm for binary classification. The logistic regression algorithm is a supervised learning algorithm that is used for binary classification problems. It is a linear model that uses the logistic function to model the probability of a binary outcome. The logistic function is an S-shaped curve that maps any real-valued number into the range of 0 to 1. The logistic regression algorithm uses gradient descent to optimize the weights of the model. After implementing the algorithm, we will test it on a few datasets and visualize the results.</p>
@@ -254,8 +254,8 @@ background-size: cover;
 </div>
 <section id="vanilla-gradient-descent" class="level2">
 <h2 class="anchored" data-anchor-id="vanilla-gradient-descent">Vanilla Gradient Descent</h2>
-<p>To first check that our logistic regression implementation is working we will run it on a simple dataset with two dimensions without using momentum. A beta value of 0 should have the same effect as gradient descent without momentum, so we will test that by setting beta to 0. We will iterate 500 times to see how the loss changes over time and plot the final decision boundary. If the loss decreases monotonically, then we can be sure that our implementation is correct.</p>
-<div id="cell-5" class="cell" data-execution_count="240">
+<p>To first check that our logistic regression implementation is working we will run it on a simple dataset with two dimensions without using momentum. A beta value of 0 should have the same effect as gradient descent without momentum, so we will test that by setting beta to 0. We will iterate 1000 times to see how the loss changes over time and plot the final decision boundary. If the loss decreases monotonically, then we can be sure that our implementation is correct.</p>
+<div id="cell-5" class="cell" data-execution_count="294">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> classification_data(noise <span class="op">=</span> <span class="fl">0.5</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression() </span>
@@ -265,7 +265,7 @@ background-size: cover;
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>loss_vec <span class="op">=</span> []</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> LR.loss(X, y)</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    loss_vec.append(loss) </span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    opt.step(X, y, alpha <span class="op">=</span> <span class="fl">0.1</span>, beta <span class="op">=</span> <span class="dv">0</span>)</span>
@@ -300,13 +300,12 @@ background-size: cover;
 </div>
 </div>
 </div>
-<p>As we can see in the above plot, the perceptron algorithm is able to correctly work its way to a loss of zero indicating to us that the algorithm is working as intended.</p>
+<p>As we can see in the above plot, the loss decreases monotonically indicating that our implementation is correct. We also observe that we were able to learn a decision boundary with an accuracy of 93% which is pretty good.</p>
 </section>
 <section id="benefits-of-momentum" class="level2">
 <h2 class="anchored" data-anchor-id="benefits-of-momentum">Benefits of Momentum</h2>
-<p>The first experiment involves linearly separable 2-dimensional data. We will create a dataset with 50 points and plot it as shown below.</p>
-<p>With this data we will run our algorithm and visualize the results. We will plot the data and the decision boundary along with the previous decision boundary as the iterations continue to improve the loss. To perform the training we are selecting a random point and seeing if it was misclassified. If it was we call the step function to update the weights. The loop stops when the loss is zero indicating that the data has been completely separated by the threshold.</p>
-<div id="cell-8" class="cell">
+<p>Now that we know that our implementation works, we will play around with momentum to see the benefits that its inclusion provides. To do this, we will set the beta value to 0.9 and run the same experiment as before on the same data.</p>
+<div id="cell-7" class="cell" data-execution_count="295">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression() </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> GradientDescentOptimizer(LR)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -314,7 +313,7 @@ background-size: cover;
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>loss_vec <span class="op">=</span> []</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> LR.loss(X, y)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    loss_vec.append(loss) </span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    opt.step(X, y, alpha <span class="op">=</span> <span class="fl">0.1</span>, beta <span class="op">=</span> <span class="fl">0.9</span>)</span>
@@ -349,12 +348,12 @@ background-size: cover;
 </div>
 </div>
 </div>
-<p>As we can see, the algorithm works from a random guess to a threshold that perfectly separates the data. The final plot shows this separation and the loss of zero confirms that the data has been completely separated.</p>
+<p>As we can see, not only did the momentum allow the loss to decrease faster, but it also allowed the final loss to be lower. This did not impact our accuracy, but it did show us that momentum can help us to converge faster which is helpful to conserve compute resources.</p>
 </section>
 <section id="overfitting" class="level2">
 <h2 class="anchored" data-anchor-id="overfitting">Overfitting</h2>
-<p>The second experiment involves 2-dimensional data that is not linearly separable. We will create a dataset with 50 points and plot it as shown below to confirm that it is not linearly separable.</p>
-<div id="cell-10" class="cell" data-execution_count="206">
+<p>The next experiment involves overfitting. We want to see if we can run into pitfalls by overfitting data. To do this we will generate data with 100 dimensions and 50 points. This will create a dataset that is very sparse and will be easy to overfit. We will generate two sets of data with these parameters, training on one and testing on the other to test for overfitting. We will run the experiment until teh training accuracy is 100% and then check the test accuracy. If the test accuracy is significantly lower than the training accuracy, then we can conclude that we have overfit the data.</p>
+<div id="cell-9" class="cell" data-execution_count="206">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> classification_data(n_points<span class="op">=</span><span class="dv">50</span>, noise<span class="op">=</span><span class="fl">0.5</span>, p_dims<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> classification_data(n_points<span class="op">=</span><span class="dv">50</span>, noise<span class="op">=</span><span class="fl">0.5</span>, p_dims<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -384,11 +383,12 @@ background-size: cover;
 Test Accuracy: 0.80</code></pre>
 </div>
 </div>
+<p>As we can see, while we managed to get 100% test accuracy, we only achieved 80% test accuracy, and this is a clear indication that we have overfit the data. This is a common problem with machine learning algorithms and can be avoided by using regularization techniques such as L1 or L2 regularization.</p>
 </section>
 <section id="performance-on-empirical-data" class="level2">
 <h2 class="anchored" data-anchor-id="performance-on-empirical-data">Performance ‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍on ‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍Empirical ‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍Data</h2>
-<p>Since the data cannot be perfectly separated, the algorithm will run forever and never reach zero loss. To rectify this we will limit the algorithm to 1000 iterations and plot the final result along with some intermediate results.</p>
-<div id="cell-12" class="cell" data-execution_count="278">
+<p>Our final test will be on real world data to see how our implementation performs. To this point we have only tested on synthetic data, so we want to see how the algorithm fares with real world data. We will use weather data from Europe collected by European Climate Assessment. While there is several cities in the dataset, we will be looking at Heathrow and trying to predict sunshine. This is significant because one of the biggest airports in the world is in Heathrow and England has a lot of rain so knowing whether it is sunny is important for air travel.</p>
+<div id="cell-11" class="cell" data-execution_count="296">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/weather.csv"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># limit to just Medu, Fedu, and G3</span></span>
@@ -413,68 +413,73 @@ Test Accuracy: 0.80</code></pre>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> torch.cat([X_test, torch.ones((X_test.size(<span class="dv">0</span>), <span class="dv">1</span>))], dim<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> (y_train <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">float</span>()</span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> (y_val <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">float</span>()</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> (y_test <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> (y_test <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test Set Mean: </span><span class="sc">{</span>y_test<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test Set Mean: 0.71</code></pre>
 </div>
+</div>
+<p>The first step is to pull in the data and clean it up. We will be predicting sunshine using precipitation and cloud cover as features. We will use train, test, split to split the data into training (60%) validation (20%) and test (20%) sets. We define sunshine as a sun value of greater than 1. This is necessary because the data is not binary and we need to convert it into a binary classification problem. We also output the mean of the label to see the baseline that we hope for the model to beat. We see that the mean of the test set is 71 meaning that 71% of the time it is sunny, so if our model is able to predict with an accuracy higher than 71% it can be said to be at least somewhat successful. We will then run the logistic regression algorithm on the data and see how it performs. We will also plot the loss over time on the training and validation sets with and without momentum to see how it performs before testing the trained model on the test set.</p>
 <div id="cell-13" class="cell" data-execution_count="293">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression()</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> GradientDescentOptimizer(LR)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>LR2 <span class="op">=</span> LogisticRegression()</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>opt2 <span class="op">=</span> GradientDescentOptimizer(LR2)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>loss_vec_momentum <span class="op">=</span> []</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>loss_vec_momentum_val <span class="op">=</span> []</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>loss_vec_no_momentum <span class="op">=</span> []</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>loss_vec_no_momentum_val <span class="op">=</span> []</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> <span class="fl">1.0</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>loss2 <span class="op">=</span> <span class="fl">1.0</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> LR.loss(X_train, y_train)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    loss_val <span class="op">=</span> LR.loss(X_val, y_val)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    loss_vec_momentum.append(loss.item())</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    loss_vec_momentum_val.append(loss_val.item())</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    opt.step(X_train, y_train, alpha<span class="op">=</span><span class="fl">0.1</span>, beta<span class="op">=</span><span class="fl">0.9</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    loss2 <span class="op">=</span> LR2.loss(X_train, y_train)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    loss_val2 <span class="op">=</span> LR2.loss(X_val, y_val)</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    loss_vec_no_momentum.append(loss2.item())</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    loss_vec_no_momentum_val.append(loss_val2.item())</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    opt2.step(X_train, y_train, alpha<span class="op">=</span><span class="fl">0.1</span>, beta<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>scores_val <span class="op">=</span> LR2.score(X_val)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>probs_val <span class="op">=</span> LR2.sigmoid(scores_val)</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>predictions_val <span class="op">=</span> (probs_val <span class="op">&gt;=</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>accuracy_val <span class="op">=</span> (predictions_val <span class="op">==</span> y_val).<span class="bu">float</span>().mean().item()</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>final_loss_val <span class="op">=</span> LR2.loss(X_val, y_val)</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(loss_vec_momentum, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Training Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(loss_vec_momentum_val, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'Validation Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Logistic Regression Iteration'</span>)</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Loss'</span>)</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Loss Over Iterations (With Momentum)'</span>)</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend()</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(loss_vec_no_momentum, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Training Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(loss_vec_no_momentum_val, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'Validation Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Logistic Regression Iteration'</span>)</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Loss'</span>)</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Loss Over Iterations (Without Momentum)'</span>)</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend()</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>scores_test <span class="op">=</span> LR.score(X_test)</span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>probs_test <span class="op">=</span> LR.sigmoid(scores_test)</span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>predictions_test <span class="op">=</span> (probs_test <span class="op">&gt;=</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>accuracy_test <span class="op">=</span> (predictions_test <span class="op">==</span> y_test).<span class="bu">float</span>().mean().item()</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>final_loss_test <span class="op">=</span> LR.loss(X_test, y_test)</span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test Accuracy (With Momentum): </span><span class="sc">{</span>accuracy_test<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Loss (With Momentum): </span><span class="sc">{</span>final_loss_test<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> GradientDescentOptimizer(LR)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>LR2 <span class="op">=</span> LogisticRegression()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>opt2 <span class="op">=</span> GradientDescentOptimizer(LR2)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>loss_vec_momentum <span class="op">=</span> []</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>loss_vec_momentum_val <span class="op">=</span> []</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>loss_vec_no_momentum <span class="op">=</span> []</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>loss_vec_no_momentum_val <span class="op">=</span> []</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>loss2 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> LR.loss(X_train, y_train)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    loss_val <span class="op">=</span> LR.loss(X_val, y_val)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    loss_vec_momentum.append(loss.item())</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    loss_vec_momentum_val.append(loss_val.item())</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    opt.step(X_train, y_train, alpha<span class="op">=</span><span class="fl">0.1</span>, beta<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    loss2 <span class="op">=</span> LR2.loss(X_train, y_train)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    loss_val2 <span class="op">=</span> LR2.loss(X_val, y_val)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    loss_vec_no_momentum.append(loss2.item())</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    loss_vec_no_momentum_val.append(loss_val2.item())</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    opt2.step(X_train, y_train, alpha<span class="op">=</span><span class="fl">0.1</span>, beta<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>scores_val <span class="op">=</span> LR2.score(X_val)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>probs_val <span class="op">=</span> LR2.sigmoid(scores_val)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>predictions_val <span class="op">=</span> (probs_val <span class="op">&gt;=</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>accuracy_val <span class="op">=</span> (predictions_val <span class="op">==</span> y_val).<span class="bu">float</span>().mean().item()</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>final_loss_val <span class="op">=</span> LR2.loss(X_val, y_val)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(loss_vec_momentum, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Training Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(loss_vec_momentum_val, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'Validation Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Logistic Regression Iteration'</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Loss'</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Loss Over Iterations (With Momentum)'</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend()</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(loss_vec_no_momentum, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Training Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(loss_vec_no_momentum_val, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'Validation Loss'</span>, markersize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Logistic Regression Iteration'</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Loss'</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Loss Over Iterations (Without Momentum)'</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend()</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>scores_test <span class="op">=</span> LR.score(X_test)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>probs_test <span class="op">=</span> LR.sigmoid(scores_test)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>predictions_test <span class="op">=</span> (probs_test <span class="op">&gt;=</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>accuracy_test <span class="op">=</span> (predictions_test <span class="op">==</span> y_test).<span class="bu">float</span>().mean().item()</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>final_loss_test <span class="op">=</span> LR.loss(X_test, y_test)</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test Accuracy (With Momentum): </span><span class="sc">{</span>accuracy_test<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Loss (With Momentum): </span><span class="sc">{</span>final_loss_test<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -487,11 +492,11 @@ Test Accuracy: 0.80</code></pre>
 Final Loss (With Momentum): 0.3487</code></pre>
 </div>
 </div>
-<p>As we see in the plot, the algorithm ran until the maximum number of iterations and the final result has a loss greater than zero. The algorithm was unable to perfectly separate the data as expected. That said, its final result is still a better decision boundary than its initial guess indicating that it was still able to learn and improve.</p>
+<p>As we see in the plots, the loss converges much faster with momentum as we observed in the second experiment. We also observe a test accuracy of 84% which exceeds the baseline of 71% indicating that our implementation is working well even when tested on real world data.</p>
 </section>
-<section id="experiment-3" class="level2">
-<h2 class="anchored" data-anchor-id="experiment-3">Experiment 3</h2>
-<p>The final experiment involves linearly separable 5-dimensional data. We will create a dataset with 50 points but we cannot plot it due to the high dimensionality. We will run the algorithm and plot the loss over time to see how it converges by plotting the loss over time.</p>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Overall, by implementing the logistic regression with momentum, we learned about the advantages of using momentum in gradient descent. We also learned about the pitfalls of overfitting and how to avoid them. Finally, we were able to test our implementation on real world data and see that it performed well. This is a good indication that our implementation is correct and can be used for other datasets as well.</p>
 
 
 </section>
