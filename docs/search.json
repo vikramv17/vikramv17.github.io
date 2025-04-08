@@ -291,7 +291,7 @@
     "href": "posts/implementing-the-perceptron-algorithm/index.html#runtime",
     "title": "Implementing the Perceptron Algorithm",
     "section": "Runtime",
-    "text": "Runtime\nA single iteration involves computing the score for a data point which is done with matrix multiplication meaning it takes O(p) time for a data point with p features. It then checks for misclassified points which takes constant O(1) time. For the weight update, the calculation looks at all of the features meaning for each misclassified point it takes O(p) time. This means that the weight update takes O(p) time. Since these steps occur consecutively, the overall runtime is O(p) + O(1) + O(p) which simplifies to O(p) time. For the mini-batch implementation, it also depends on the value of k since it does all of this work for k points at a time. This means that the runtime is O(k x p) time."
+    "text": "Runtime\nA single iteration involves computing the score for a data point which is done with matrix multiplication meaning it takes O(p) time for a data point with p features. It then checks for misclassified points which takes constant O(1) time. For the weight update, the calculation looks at all of the features meaning for each misclassified point it takes O(p) time. This means that the weight update takes O(p) time. Since these steps occur consecutively, the overall runtime is O(p) + O(1) + O(p) which simplifies to O(p) time. For the mini-batch implementation, it also depends on the value of k since it does all of this work for k points at a time. This means that the runtime is O(kp) time."
   },
   {
     "objectID": "posts/implementing-logistic-regression/index.html",
