@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/deep-music-genre-classification/index.html",
       "/posts/overfitting-overparameterization-and-double-descent/index.html",
       "/posts/implementing-logistic-regression/index.html",
       "/posts/implementing-the-perceptron-algorithm/index.html",
